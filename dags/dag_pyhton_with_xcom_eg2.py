@@ -24,7 +24,7 @@ with DAG(
     # 그러나 같은 key 값의 ti 객체가 있다면 제일 마지막에 들어간 값을 기준으로 가져옴
     # 따라서 task_ids로 task_id를 명시하여 원하는 ti 객체의 xcom 값을 가져올 수 있음
     @task(task_id='python_xcom_pull_task')
-    def xcom_push2(**kwargs):
+    def xcom_pull(**kwargs):
         ti = kwargs['ti']
         value1 = ti.xcom_pull(key="result1")
         value2 = ti.xcom_pull(key="result2", task_ids='python_xcom_push_task1')
