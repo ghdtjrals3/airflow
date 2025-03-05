@@ -1,6 +1,6 @@
 from airflow import DAG
 from airflow.operators.bash import BashOperator
-from airflow.providers.http.operators.http import SimpleHttpOperator
+from airflow.providers.http.operators.http import HttpOperator
 from airflow.decorators import task
 import pendulum
 
@@ -11,7 +11,7 @@ with DAG(
     schedule=None
 ) as dag:
     '''감염병(코로나) 확진자 발생동향'''
-    covid19_info = SimpleHttpOperator(
+    covid19_info = HttpOperator(
         task_id='covid19_info',
         http_conn_id='openapi.seoul.go.kr',
         endpoint='{{var.value.apikey_openapi_seoul_go_kr}}/xml/TbCorona19CountStatus/1/5/',
