@@ -14,7 +14,7 @@ with DAG(
     covid19_info = HttpOperator(
         task_id='covid19_info',
         http_conn_id='openapi.seoul.go.kr',
-        endpoint='{{var.value.apikey_openapi_seoul_go_kr}}/xml/TbCorona19CountStatus/1/5/',
+        endpoint='{{var.value.apikey_openapi_seoul_go_kr}}/json/TbCorona19CountStatus/1/5/',
         method='GET',
         headers={'Content-Type': 'application/json',
                 'charset': 'utf-8',
