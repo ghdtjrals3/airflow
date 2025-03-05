@@ -1,6 +1,6 @@
 from airflow import DAG
 from airflow.operators.bash import BashOperator
-from airflow.providers.http.operators.http import HttpOperator
+from airflow.providers.http.operators.http import SimpleHttpOperator
 from airflow.decorators import task
 import pendulum
 
@@ -11,7 +11,7 @@ with DAG(
     schedule=None
 ) as dag:
     '''감염병(코로나) 확진자 발생동향'''
-    covid19_info = HttpOperator(
+    covid19_info = SimpleHttpOperator(
         task_id='covid19_info',
         http_conn_id='openapi.seoul.go.kr',
         endpoint='{{var.value.apikey_openapi_seoul_go_kr}}/xml/TbCorona19CountStatus/1/5/',
@@ -19,8 +19,9 @@ with DAG(
         headers={'Content-Type': 'application/json',
                 'charset': 'utf-8',
                 'Accept': '*/*'
-                }
-
+                },
+        do_xcom_push=True,
+        log_response=True
     )
 
     @task(task_id='pyhton_2')
@@ -30,6 +31,14 @@ with DAG(
         import json
         from pprint import pprint
 
-        pprint(json.loads(rslt))
+        if not rslt:
+            print("HTTP 응답이 비어 있습니다.")
+            return
+
+        try:
+            pprint(json.loads(rslt))
+        except json.JSONDecodeError as e:
+            print(f"JSON 파싱 오류: {e}")
+            print(f"응답 내용: {rslt}")
         
     covid19_info >> python_2()
