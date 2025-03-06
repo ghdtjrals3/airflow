@@ -37,7 +37,7 @@ class SeoulApiToCsvOperator(BaseOperator):
         if not os.path.exists(self.path):
             os.system(f'mkdir -p {self.path}')
         total_row_df.to_csv(self.path + '/' + self.file_name, encoding='utf-8', index=False)
-        
+
     def _call_api(self, base_url, start_row, end_row):
         import requests
         import json
@@ -48,7 +48,7 @@ class SeoulApiToCsvOperator(BaseOperator):
                    }
         
         request_url = f'{base_url}/{start_row}/{end_row}'
-        if self.base_df is not None:
+        if self.base_dt is not None:
             request_url = f'{base_url}/{start_row}/{end_row}/{self.base_dt}'
         response = requests.get(request_url, headers)
         contents = json.load(response.text)
