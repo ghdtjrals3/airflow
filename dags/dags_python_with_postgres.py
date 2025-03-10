@@ -10,7 +10,7 @@ with DAG(
     start_date = pendulum.datetime(2023, 3, 1, tz="Asia/Seoul"),
     catchup=False
 ) as dag:
-    def insrt_postgres(ip, port, dbname, user, psswd, **kwargs):
+    def insrt_postgres(ip, port, dbname, user, passwd, **kwargs):
         import psycopg2
         from contextlib import closing
 
