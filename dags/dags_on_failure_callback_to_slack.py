@@ -10,8 +10,8 @@ with DAG(
     start_date=pendulum.datetime(2025, 2, 1, tz="Asia/Seoul"),
     catchup=False,
     default_args={
-        'on_failure_callback': on_failure_callback_to_slack
-        'execution_timeout': timedelta(seconds_60)
+        'on_failure_callback': on_failure_callback_to_slack,
+        'execution_timeout': timedelta(seconds=60)
     }
 ) as dag:
     task_slp_90 = BashOperator(
